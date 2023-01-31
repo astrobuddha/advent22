@@ -84,17 +84,18 @@ impl Rucks {
     pub fn char_eval(&self, input: char) -> u32 {
         let mut sum = 0;
 
-        if let Some(k) = MAP.get(&c) {
-            sum = k;
+        if let Some(k) = MAP.get(&input) {
+            sum = *k;
         }
 
         sum
     }
 
-    pub fn split(&self, sack: &str) -> (str, str) {
+    pub fn split<'a>(&self, sack: &'a str) -> (&'a str, &'a str) {
         let mid = sack.chars().count() / 2;
 
-        let (first, second) = sack.split_at(mid);
+        let first = &sack[0..mid];
+        let second = &sack[mid..];
 
         (first, second)
     }
