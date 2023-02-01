@@ -8,6 +8,7 @@ fn main() {
     // let result = ruck.line_value("vJrwpWtwJgWrhcsFMMfFFhFp");
 
     let day_3 = Day3::new();
-    let result = day_3.get_first("input_3_1.txt");
+    let day_3_input = "input_3_1.txt";
+    let result = day_3.get_first(day_3_input);
     println!("the value is: {result}")
 }

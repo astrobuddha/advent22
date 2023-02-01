@@ -1,5 +1,5 @@
 use lazy_static::lazy_static;
-use std::collections::HashMap;
+use std::{cell::RefCell, collections::HashMap};
 
 lazy_static! {
     static ref MAP: HashMap<char, u32> = {
@@ -70,18 +70,6 @@ impl Rucks {
         Rucks
     }
 
-    pub fn evaluate(&self, words: &str) -> u32 {
-        let mut sum = 0;
-
-        for c in words.chars() {
-            if let Some(k) = MAP.get(&c) {
-                sum += k;
-            }
-        }
-
-        sum
-    }
-
     pub fn line_value(&self, line: &str) -> u32 {
         self.char_eval(self.find_char(self.split(line)))
     }
@@ -113,5 +101,28 @@ impl Rucks {
         }
 
         '0'
+    }
+
+    pub fn find_badge(&self, lines: &[&str]) -> char {
+        let mut counts = HashMap::new();
+
+        for line in lines {
+            for c in line.chars() {
+                if !counts.contains_key(&c) {
+                    counts.insert(c.to_owned(), RefCell::new(1));
+                } else {
+                    let value = counts.get(&c).unwrap();
+                    *value.borrow_mut() += 1;
+                }
+            }
+        }
+
+        for (key, value) in counts.iter() {
+            if *value == 3.into() {
+                return *key;
+            }
+        }
+
+        panic!("badge not found");
     }
 }

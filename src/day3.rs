@@ -25,4 +25,33 @@ impl Day3 {
 
         sum
     }
+
+    pub fn get_second(&self, file_path: &str) -> u32 {
+        let mut sum = 0;
+
+        let file = File::open(file_path).unwrap();
+        let reader = BufReader::new(file);
+        let rucks = Rucks::new();
+
+        let mut lines = reader.lines().enumerate();
+
+        loop {
+            if let Some(line0) = lines.next() {
+                let line1 = lines.next().unwrap();
+                let line2 = lines.next().unwrap();
+
+                let str0 = Result::unwrap(line0.1).as_str();
+                let str1 = line1.1.unwrap().as_str();
+                let str2 = line2.1.unwrap().as_str();
+
+                let input = vec![str0, str1, str2];
+
+                let badge = rucks.find_badge(&input);
+            } else {
+                break;
+            }
+        }
+
+        sum
+    }
 }
