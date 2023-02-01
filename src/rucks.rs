@@ -62,6 +62,7 @@ lazy_static! {
     };
 }
 
+// todo add unit tests
 pub struct Rucks;
 
 impl Rucks {
@@ -81,7 +82,11 @@ impl Rucks {
         sum
     }
 
-    pub fn char_eval(&self, input: char) -> u32 {
+    pub fn line_value(&self, line: &str) -> u32 {
+        self.char_eval(self.find_char(self.split(line)))
+    }
+
+    fn char_eval(&self, input: char) -> u32 {
         let mut sum = 0;
 
         if let Some(k) = MAP.get(&input) {
@@ -91,7 +96,7 @@ impl Rucks {
         sum
     }
 
-    pub fn split<'a>(&self, sack: &'a str) -> (&'a str, &'a str) {
+    fn split<'a>(&self, sack: &'a str) -> (&'a str, &'a str) {
         let mid = sack.chars().count() / 2;
 
         let first = &sack[0..mid];
@@ -100,7 +105,7 @@ impl Rucks {
         (first, second)
     }
 
-    pub fn find_char(&self, packs: (&str, &str)) -> char {
+    fn find_char(&self, packs: (&str, &str)) -> char {
         for c in packs.0.chars() {
             if packs.1.contains(c) {
                 return c;
