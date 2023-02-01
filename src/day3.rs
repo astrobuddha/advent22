@@ -40,9 +40,9 @@ impl Day3 {
                 let line1 = lines.next().unwrap();
                 let line2 = lines.next().unwrap();
 
-                let str0 = Result::unwrap(line0.1).as_str();
-                let str1 = line1.1.unwrap().as_str();
-                let str2 = line2.1.unwrap().as_str();
+                let str0 = line0.1.unwrap();
+                let str1 = line1.1.unwrap();
+                let str2 = line2.1.unwrap();
 
                 let input = vec![str0, str1, str2];
 

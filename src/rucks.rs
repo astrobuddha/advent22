@@ -103,7 +103,7 @@ impl Rucks {
         '0'
     }
 
-    pub fn find_badge(&self, lines: &[&str]) -> char {
+    pub fn find_badge(&self, lines: &[String]) -> char {
         let mut counts = HashMap::new();
 
         for line in lines {
