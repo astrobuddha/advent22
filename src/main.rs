@@ -10,5 +10,8 @@ fn main() {
     let day_3 = Day3::new();
     let day_3_input = "input_3_1.txt";
     let result = day_3.get_first(day_3_input);
-    println!("the value is: {result}")
+    println!("day 3 part 1 is: {result}");
+
+    let result = day_3.get_second(day_3_input);
+    println!("day 3 part 2 is: {result}")
 }

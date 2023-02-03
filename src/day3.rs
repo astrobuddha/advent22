@@ -47,6 +47,8 @@ impl Day3 {
                 let input = vec![str0, str1, str2];
 
                 let badge = rucks.find_badge(&input);
+
+                sum += rucks.char_eval(badge);
             } else {
                 break;
             }

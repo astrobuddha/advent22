@@ -74,7 +74,7 @@ impl Rucks {
         self.char_eval(self.find_char(self.split(line)))
     }
 
-    fn char_eval(&self, input: char) -> u32 {
+    pub fn char_eval(&self, input: char) -> u32 {
         let mut sum = 0;
 
         if let Some(k) = MAP.get(&input) {
