@@ -1,5 +1,5 @@
 use lazy_static::lazy_static;
-use std::{cell::RefCell, collections::HashMap};
+use std::collections::HashMap;
 
 lazy_static! {
     static ref MAP: HashMap<char, u32> = {
@@ -104,22 +104,19 @@ impl Rucks {
     }
 
     pub fn find_badge(&self, lines: &[String]) -> char {
-        let mut counts = HashMap::new();
-
-        for line in lines {
-            for c in line.chars() {
-                if !counts.contains_key(&c) {
-                    counts.insert(c.to_owned(), RefCell::new(1));
-                } else {
-                    let value = counts.get(&c).unwrap();
-                    *value.borrow_mut() += 1;
-                }
-            }
+        if lines.len() < 3 {
+            panic!("Not enough elves!");
         }
 
-        for (key, value) in counts.iter() {
-            if *value == 3.into() {
-                return *key;
+        if lines.len() > 3 {
+            panic!("Too many elves!");
+        }
+
+        let first = lines[0].chars();
+
+        for c in first {
+            if lines[1].contains(c) && lines[2].contains(c) {
+                return c;
             }
         }
 
@@ -132,11 +129,66 @@ mod rucks_tests {
     use crate::rucks::Rucks;
 
     #[test]
-    fn test_find_badge() {
+    fn test_char_eval() {
         let myruck = Rucks::new();
 
         let val = myruck.char_eval('a');
 
         assert!(val == 1);
+    }
+
+    #[test]
+    fn test_find_badge() {
+        let myruck = Rucks::new();
+
+        let lines = vec![
+            String::from("vJrwpWtwJgWrhcsFMMfFFhFp"),
+            String::from("jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"),
+            String::from("PmmdzqPrVvPwwTWBwg"),
+        ];
+
+        let expected = 'r';
+
+        let actual = myruck.find_badge(&lines);
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_find_badge_sum() {
+        let myruck = Rucks::new();
+
+        let lines = vec![
+            String::from("vJrwpWtwJgWrhcsFMMfFFhFp"),
+            String::from("jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"),
+            String::from("PmmdzqPrVvPwwTWBwg"),
+        ];
+
+        let expected = 'r';
+
+        let actual = myruck.find_badge(&lines);
+
+        assert_eq!(actual, expected);
+
+        let lines2 = vec![
+            String::from("wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn"),
+            String::from("ttgJtRGJQctTZtZT"),
+            String::from("CrZsJsPPZsGzwwsLwLmpwMDw"),
+        ];
+
+        let expected2 = 'Z';
+
+        let actual2 = myruck.find_badge(&lines2);
+
+        assert_eq!(actual2, expected2);
+
+        let mut sum = 0;
+
+        sum += myruck.char_eval(actual);
+        sum += myruck.char_eval(actual2);
+
+        let expected_sum = 70;
+
+        assert_eq!(sum, expected_sum);
     }
 }
