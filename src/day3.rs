@@ -57,3 +57,20 @@ impl Day3 {
         sum
     }
 }
+
+#[cfg(test)]
+mod day3_tests {
+    use crate::day3::Day3;
+
+    #[test]
+    fn test_test_input() {
+        let myday3 = Day3::new();
+
+        let test_input = "day3_test_input.txt";
+        let expected = 70;
+
+        let actual = myday3.get_second(test_input);
+
+        assert_eq!(actual, expected);
+    }
+}
