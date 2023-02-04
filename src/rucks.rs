@@ -62,7 +62,6 @@ lazy_static! {
     };
 }
 
-// todo add unit tests
 pub struct Rucks;
 
 impl Rucks {

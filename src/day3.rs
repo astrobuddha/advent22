@@ -4,7 +4,6 @@ use std::io::BufReader;
 
 use crate::rucks::Rucks;
 
-// todo add unit tests
 pub struct Day3 {}
 
 impl Day3 {
