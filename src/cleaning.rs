@@ -41,16 +41,28 @@ impl Cleaning {
         (pair1, pair2)
     }
 
-    pub fn add_overlap(pairs: ((u32, u32), (u32, u32))) -> u32 {
-        if pairs.0 .0 <= pairs.1 .0 && pairs.0 .1 >= pairs.1 .1 {
+    pub fn add_overlap(pair1: (u32, u32), pair2: (u32, u32)) -> u32 {
+        if pair1.0 <= pair2.0 && pair1.1 >= pair2.1 {
             return 1;
         }
 
-        if pairs.0 .0 >= pairs.1 .0 && pairs.0 .1 <= pairs.1 .1 {
+        if pair1.0 >= pair2.0 && pair1.1 <= pair2.1 {
             return 1;
         }
 
         0
+    }
+
+    pub fn get_all_overlap(pairs: &[(u32, u32)]) -> u32 {
+        let mut sum = 0;
+
+        for i in 0..pairs.len() {
+            for j in i..pairs.len() {
+                sum += Self::add_overlap(pairs[i], pairs[j]);
+            }
+        }
+
+        sum
     }
 }
 
@@ -74,19 +86,19 @@ mod cleaning_tests {
         let input = ((2, 4), (6, 8));
 
         let expected = 0;
-        let actual = Cleaning::add_overlap(input);
+        let actual = Cleaning::add_overlap(input.0, input.1);
 
         assert!(actual == expected);
 
         let input = ((2, 8), (3, 7));
         let expected = 1;
-        let actual = Cleaning::add_overlap(input);
+        let actual = Cleaning::add_overlap(input.0, input.1);
 
         assert!(actual == expected);
 
         let input = ((6, 6), (4, 6));
         let expected = 1;
-        let actual = Cleaning::add_overlap(input);
+        let actual = Cleaning::add_overlap(input.0, input.1);
 
         assert!(actual == expected);
     }

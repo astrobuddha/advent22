@@ -24,4 +24,8 @@ fn main() {
     let result = day4::Day4::get_first(day_4_input);
 
     println!("day 4 part 1 is: {result}");
+
+    let result = day4::Day4::get_second(day_4_input);
+
+    println!("day 4 part 2 is: {result}");
 }
