@@ -126,3 +126,17 @@ impl Rucks {
         panic!("badge not found");
     }
 }
+
+#[cfg(test)]
+mod rucks_tests {
+    use crate::rucks::Rucks;
+
+    #[test]
+    fn test_find_badge() {
+        let myruck = Rucks::new();
+
+        let val = myruck.char_eval('a');
+
+        assert!(val == 1);
+    }
+}
