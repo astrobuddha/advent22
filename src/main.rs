@@ -1,11 +1,13 @@
 mod day3;
 mod day4;
+mod day5;
 
 mod cleaning;
 mod common;
 mod rucks;
 
 use crate::day3::Day3;
+use crate::day5::Day5;
 
 fn main() {
     // using OO for day 3
@@ -28,4 +30,7 @@ fn main() {
     let result = day4::Day4::get_second(day_4_input);
 
     println!("day 4 part 2 is: {result}");
+
+    // going OO for this one.
+    let day_5 = Day5::new();
 }

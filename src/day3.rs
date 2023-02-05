@@ -4,7 +4,7 @@ use std::io::BufReader;
 
 use crate::rucks::Rucks;
 
-pub struct Day3 {}
+pub struct Day3;
 
 impl Day3 {
     pub fn new() -> Day3 {
