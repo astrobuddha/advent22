@@ -11,7 +11,7 @@ pub struct Move {
     to: u32,
 }
 
-#[derive(Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct MoveError;
 
 // we are not doing the text GUI, the crate stacks will be
@@ -81,6 +81,7 @@ impl Day5 {
 mod day5_test {
     use crate::day5::Day5;
     use crate::day5::Move;
+    use crate::day5::MoveError;
 
     #[test]
     fn test_constructor_stacks() {
@@ -119,6 +120,19 @@ mod day5_test {
         };
 
         let actual = myday.parse_move(action).unwrap();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_move_when_invalid_move_expect_move_error() {
+        let myday = Day5::new();
+
+        let action = "move 1 from 8 to ";
+
+        let expected = Err(MoveError);
+
+        let actual = myday.parse_move(action);
 
         assert_eq!(actual, expected);
     }
