@@ -1,6 +1,18 @@
+use std::num;
+
+use crate::common;
+
 pub struct Day5 {
     pub stacks: Vec<Vec<char>>,
 }
+
+pub struct Move {
+    num_crates: u32,
+    from: u32,
+    to: u32,
+}
+
+pub struct MoveError;
 
 // we are not doing the text GUI, the crate stacks will be
 // represented by logical stacks
@@ -30,6 +42,41 @@ impl Day5 {
 
         Day5 { stacks }
     }
+
+    pub fn parse_move(line: &str) -> Result<Move, MoveError> {
+        // sample: move 1 from 8 to 1
+
+        let parts: Vec<&str> = line.split(" ").collect();
+
+        if parts.len() != 6 {
+            return Err(MoveError);
+        }
+
+        let num_crates: u32;
+        let from: u32;
+        let to: u32;
+
+        match common::parse_uint(parts[1]) {
+            Ok(n) => num_crates = n,
+            Err(_) => return Err(MoveError),
+        }
+
+        match common::parse_uint(parts[3]) {
+            Ok(n) => from = n,
+            Err(_) => return Err(MoveError),
+        }
+
+        match common::parse_uint(parts[5]) {
+            Ok(n) => to = n,
+            Err(_) => return Err(MoveError),
+        }
+
+        Ok(Move {
+            num_crates,
+            from,
+            to,
+        })
+    }
 }
 
 #[cfg(test)]
@@ -43,5 +90,20 @@ mod day5_test {
         let top_s0 = myday5.stacks[0].last().unwrap().clone();
 
         assert_eq!(top_s0, 'Q');
+    }
+
+    #[test]
+    fn test_all_stacks() {
+        let myday5 = Day5::new();
+
+        let tops: Vec<char> = myday5
+            .stacks
+            .iter()
+            .map(|stack| -> char { stack.last().expect("cannot get package!").clone() })
+            .collect();
+
+        let expected = vec!['Q', 'J', 'Q', 'F', 'Z', 'S', 'F', 'B', 'H'];
+
+        assert_eq!(tops, expected);
     }
 }
