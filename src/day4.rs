@@ -15,7 +15,7 @@ impl Day4 {
 
         reader.lines().for_each(|line| {
             if let Ok(l) = line {
-                sum += Self::check_line(&l.as_str());
+                sum += Self::check_line(&l.as_str(), false);
             }
         });
 
@@ -26,26 +26,25 @@ impl Day4 {
         let file = File::open(file_path).unwrap();
         let reader = BufReader::new(file);
 
-        let mut pairs: Vec<(u32, u32)> = Vec::new();
+        let mut sum = 0;
 
         reader.lines().for_each(|line| {
             if let Ok(l) = line {
-                let line_pairs = Cleaning::get_pairs(&l);
-
-                pairs.push(line_pairs.0);
-                pairs.push(line_pairs.1);
+                sum += Self::check_line(&l.as_str(), true);
             }
         });
 
-        let result = Cleaning::get_all_overlap(&pairs);
-
-        result
+        sum
     }
 
-    pub fn check_line(line: &str) -> u32 {
+    pub fn check_line(line: &str, any: bool) -> u32 {
         let pairs = Cleaning::get_pairs(line);
 
-        Cleaning::add_overlap(pairs.0, pairs.1)
+        if any {
+            return Cleaning::any_overlap(pairs.0, pairs.1);
+        }
+
+        Cleaning::all_overlap(pairs.0, pairs.1)
     }
 }
 
