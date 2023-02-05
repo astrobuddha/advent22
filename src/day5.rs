@@ -1,17 +1,17 @@
-use std::num;
-
 use crate::common;
 
 pub struct Day5 {
     pub stacks: Vec<Vec<char>>,
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Move {
     num_crates: u32,
     from: u32,
     to: u32,
 }
 
+#[derive(Debug)]
 pub struct MoveError;
 
 // we are not doing the text GUI, the crate stacks will be
@@ -43,9 +43,7 @@ impl Day5 {
         Day5 { stacks }
     }
 
-    pub fn parse_move(line: &str) -> Result<Move, MoveError> {
-        // sample: move 1 from 8 to 1
-
+    pub fn parse_move(&self, line: &str) -> Result<Move, MoveError> {
         let parts: Vec<&str> = line.split(" ").collect();
 
         if parts.len() != 6 {
@@ -82,6 +80,7 @@ impl Day5 {
 #[cfg(test)]
 mod day5_test {
     use crate::day5::Day5;
+    use crate::day5::Move;
 
     #[test]
     fn test_constructor_stacks() {
@@ -106,4 +105,23 @@ mod day5_test {
 
         assert_eq!(tops, expected);
     }
+
+    #[test]
+    fn parse_move_when_validmove_expect_ok() {
+        let myday = Day5::new();
+
+        let action = "move 1 from 8 to 1";
+
+        let expected = Move {
+            num_crates: 1,
+            from: 8,
+            to: 1,
+        };
+
+        let actual = myday.parse_move(action).unwrap();
+
+        assert_eq!(actual, expected);
+    }
+
+    // todo complete parse_move error tests
 }
