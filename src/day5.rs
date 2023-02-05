@@ -125,10 +125,36 @@ mod day5_test {
     }
 
     #[test]
-    fn parse_move_when_invalid_move_expect_move_error() {
+    fn parse_move_when_incomplete_move_expect_move_error() {
         let myday = Day5::new();
 
         let action = "move 1 from 8 to ";
+
+        let expected = Err(MoveError);
+
+        let actual = myday.parse_move(action);
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_move_when_too_much_info_expect_move_error() {
+        let myday = Day5::new();
+
+        let action = "move 1 from 8 to 9 and more";
+
+        let expected = Err(MoveError);
+
+        let actual = myday.parse_move(action);
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_move_when_parse_issue_expect_move_error() {
+        let myday = Day5::new();
+
+        let action = "move one from 8 to 9";
 
         let expected = Err(MoveError);
 
