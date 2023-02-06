@@ -6,9 +6,9 @@ pub struct Day5 {
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct Move {
-    num_crates: u32,
-    from: u32,
-    to: u32,
+    num_crates: i32,
+    from: i32,
+    to: i32,
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -74,6 +74,14 @@ impl Day5 {
             from,
             to,
         })
+    }
+
+    pub fn do_move(&self, action: Move) {
+        // minus one because 0 index
+        let from = action.from - 1;
+        let to = action.to - 1;
+        let from_stack = &self.stacks[from];
+        let to_stack = self.stacks[to].unwrap();
     }
 }
 
@@ -162,6 +170,4 @@ mod day5_test {
 
         assert_eq!(actual, expected);
     }
-
-    // todo complete parse_move error tests
 }
