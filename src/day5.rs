@@ -1,7 +1,9 @@
+use std::collections::HashMap;
+
 use crate::common;
 
 pub struct Day5 {
-    pub stacks: Vec<Vec<char>>,
+    pub stacks: HashMap<i32, Vec<char>>,
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -18,7 +20,7 @@ pub struct MoveError;
 // represented by logical stacks
 impl Day5 {
     pub fn new() -> Day5 {
-        let mut stacks: Vec<Vec<char>> = Vec::new();
+        let mut stacks: HashMap<i32, Vec<char>> = HashMap::new();
 
         let stack0 = vec!['F', 'T', 'C', 'L', 'R', 'P', 'G', 'Q'];
         let stack1 = vec!['N', 'Q', 'H', 'W', 'R', 'F', 'S', 'J'];
@@ -30,15 +32,15 @@ impl Day5 {
         let stack7 = vec!['T', 'J', 'B'];
         let stack8 = vec!['Q', 'N', 'B', 'G', 'L', 'S', 'P', 'H'];
 
-        stacks.push(stack0);
-        stacks.push(stack1);
-        stacks.push(stack2);
-        stacks.push(stack3);
-        stacks.push(stack4);
-        stacks.push(stack5);
-        stacks.push(stack6);
-        stacks.push(stack7);
-        stacks.push(stack8);
+        stacks.insert(0, stack0);
+        stacks.insert(1, stack1);
+        stacks.insert(2, stack2);
+        stacks.insert(3, stack3);
+        stacks.insert(4, stack4);
+        stacks.insert(5, stack5);
+        stacks.insert(6, stack6);
+        stacks.insert(7, stack7);
+        stacks.insert(8, stack8);
 
         Day5 { stacks }
     }
@@ -50,9 +52,9 @@ impl Day5 {
             return Err(MoveError);
         }
 
-        let num_crates: u32;
-        let from: u32;
-        let to: u32;
+        let num_crates: i32;
+        let from: i32;
+        let to: i32;
 
         match common::parse_uint(parts[1]) {
             Ok(n) => num_crates = n,
