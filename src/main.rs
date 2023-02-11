@@ -9,12 +9,14 @@ mod rucks;
 use crate::day3::Day3;
 use crate::day5::Day5;
 
+// TODO: replace all .unwrap() in production code. Unit tests are fine
 fn main() {
     // using OO for day 3
     let day_3 = Day3::new();
 
     let day_3_input = "input_3_1.txt";
     let day_4_input = "input_4_1.txt";
+    let day_5_input = "day5_test_input.txt";
 
     let result = day_3.get_first(day_3_input);
     println!("day 3 part 1 is: {result}");
@@ -32,5 +34,13 @@ fn main() {
     println!("day 4 part 2 is: {result}");
 
     // going OO for this one.
-    let day_5 = Day5::new();
+    let mut day_5 = Day5::new();
+
+    println!("before actions:");
+    day_5.print_stacks();
+
+    day_5.get_first(day_5_input);
+
+    println!("after actions:");
+    day_5.print_stacks();
 }

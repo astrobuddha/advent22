@@ -8,9 +8,9 @@ pub fn parse_int(input: &str) -> Result<i32, <i32 as FromStr>::Err> {
     i32::from_str(input.trim())
 }
 
-pub fn parse_usize(input: &str) -> Result<usize, <usize as FromStr>::Err> {
-    usize::from_str(input.trim())
-}
+// pub fn parse_usize(input: &str) -> Result<usize, <usize as FromStr>::Err> {
+//     usize::from_str(input.trim())
+// }
 
 #[cfg(test)]
 mod common_tests {
@@ -31,7 +31,7 @@ mod common_tests {
     fn parse_uint_when_negative_expect_err() {
         let input = "-32";
 
-        let actual = common::parse_int(input);
+        let actual = common::parse_uint(input);
 
         if let Err(_) = actual {
             assert!(true);
@@ -74,23 +74,20 @@ mod common_tests {
     }
 
     #[test]
-    fn parse_int_when_negative_expect_err() {
+    fn parse_int_when_negative_expect_value() {
         let input = "-32";
 
-        let actual = common::parse_int(input);
+        let expected = -32;
+        let actual = common::parse_int(input).unwrap();
 
-        if let Err(_) = actual {
-            assert!(true);
-        } else {
-            panic!("failed to produce error");
-        }
+        assert!(actual == expected);
     }
 
     #[test]
     fn parse_int_when_nonnumber_expect_err() {
         let input = "ten";
 
-        let actual = common::parse_uint(input);
+        let actual = common::parse_int(input);
 
         if let Err(_) = actual {
             assert!(true);
@@ -104,7 +101,7 @@ mod common_tests {
         let input = "   32    ";
 
         let expected = 32;
-        let actual = common::parse_uint(input).unwrap();
+        let actual = common::parse_int(input).unwrap();
 
         assert!(actual == expected);
     }

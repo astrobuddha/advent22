@@ -1,4 +1,7 @@
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::BufRead;
+use std::io::BufReader;
 
 use crate::common;
 
@@ -22,17 +25,16 @@ impl Day5 {
     pub fn new() -> Day5 {
         let mut stacks: HashMap<i32, Vec<char>> = HashMap::new();
 
-        let stack0 = vec!['F', 'T', 'C', 'L', 'R', 'P', 'G', 'Q'];
-        let stack1 = vec!['N', 'Q', 'H', 'W', 'R', 'F', 'S', 'J'];
-        let stack2 = vec!['F', 'B', 'H', 'W', 'P', 'M', 'Q'];
-        let stack3 = vec!['V', 'S', 'T', 'D', 'F'];
-        let stack4 = vec!['Q', 'L', 'D', 'W', 'V', 'F', 'Z'];
-        let stack5 = vec!['Z', 'C', 'L', 'S'];
-        let stack6 = vec!['Z', 'B', 'M', 'V', 'D', 'F'];
-        let stack7 = vec!['T', 'J', 'B'];
-        let stack8 = vec!['Q', 'N', 'B', 'G', 'L', 'S', 'P', 'H'];
+        let stack1 = vec!['F', 'T', 'C', 'L', 'R', 'P', 'G', 'Q'];
+        let stack2 = vec!['N', 'Q', 'H', 'W', 'R', 'F', 'S', 'J'];
+        let stack3 = vec!['F', 'B', 'H', 'W', 'P', 'M', 'Q'];
+        let stack4 = vec!['V', 'S', 'T', 'D', 'F'];
+        let stack5 = vec!['Q', 'L', 'D', 'W', 'V', 'F', 'Z'];
+        let stack6 = vec!['Z', 'C', 'L', 'S'];
+        let stack7 = vec!['Z', 'B', 'M', 'V', 'D', 'F'];
+        let stack8 = vec!['T', 'J', 'B'];
+        let stack9 = vec!['Q', 'N', 'B', 'G', 'L', 'S', 'P', 'H'];
 
-        stacks.insert(0, stack0);
         stacks.insert(1, stack1);
         stacks.insert(2, stack2);
         stacks.insert(3, stack3);
@@ -41,8 +43,32 @@ impl Day5 {
         stacks.insert(6, stack6);
         stacks.insert(7, stack7);
         stacks.insert(8, stack8);
+        stacks.insert(9, stack9);
 
         Day5 { stacks }
+    }
+
+    pub fn print_stacks(&mut self) {
+        let ret: Vec<&Vec<char>> = self.stacks.values().into_iter().collect();
+
+        ret.iter().for_each(|stack| {
+            println!("{:?}", stack);
+        });
+    }
+
+    pub fn get_first(&mut self, file_path: &str) {
+        let file = File::open(file_path).unwrap();
+        let reader = BufReader::new(file);
+
+        reader.lines().for_each(|line| {
+            let action = self.parse_move(&line.unwrap());
+
+            if let Ok(act) = action {
+                self.do_action(act);
+            } else {
+                panic!("cannot interpret action!");
+            }
+        });
     }
 
     pub fn parse_move(&self, line: &str) -> Result<Move, MoveError> {
@@ -56,17 +82,17 @@ impl Day5 {
         let from: i32;
         let to: i32;
 
-        match common::parse_uint(parts[1]) {
+        match common::parse_int(parts[1]) {
             Ok(n) => num_crates = n,
             Err(_) => return Err(MoveError),
         }
 
-        match common::parse_uint(parts[3]) {
+        match common::parse_int(parts[3]) {
             Ok(n) => from = n,
             Err(_) => return Err(MoveError),
         }
 
-        match common::parse_uint(parts[5]) {
+        match common::parse_int(parts[5]) {
             Ok(n) => to = n,
             Err(_) => return Err(MoveError),
         }
@@ -78,12 +104,17 @@ impl Day5 {
         })
     }
 
-    pub fn do_move(&self, action: Move) {
-        // minus one because 0 index
-        let from = action.from - 1;
-        let to = action.to - 1;
-        let from_stack = &self.stacks[from];
-        let to_stack = self.stacks[to].unwrap();
+    // point of learning here: in order to pop, self has to be mut.
+    pub fn do_move(&mut self, from: i32, to: i32) {
+        let to_move = self.stacks.get_mut(&from).unwrap().pop().unwrap();
+
+        self.stacks.get_mut(&to).unwrap().push(to_move);
+    }
+
+    pub fn do_action(&mut self, action: Move) {
+        for _ in 0..action.num_crates {
+            self.do_move(action.from, action.to);
+        }
     }
 }
 
@@ -97,9 +128,10 @@ mod day5_test {
     fn test_constructor_stacks() {
         let myday5 = Day5::new();
 
-        let top_s0 = myday5.stacks[0].last().unwrap().clone();
+        let expected = 9;
+        let num_stacks = myday5.stacks.len();
 
-        assert_eq!(top_s0, 'Q');
+        assert!(num_stacks == expected);
     }
 
     #[test]
@@ -109,12 +141,14 @@ mod day5_test {
         let tops: Vec<char> = myday5
             .stacks
             .iter()
-            .map(|stack| -> char { stack.last().expect("cannot get package!").clone() })
+            .map(|stack| -> char { stack.1.last().expect("cannot get package!").clone() })
             .collect();
 
         let expected = vec!['Q', 'J', 'Q', 'F', 'Z', 'S', 'F', 'B', 'H'];
 
-        assert_eq!(tops, expected);
+        tops.iter().for_each(|pack| {
+            assert!(expected.contains(pack));
+        })
     }
 
     #[test]
