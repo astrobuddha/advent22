@@ -7,6 +7,7 @@ use crate::common;
 
 pub struct Day5 {
     pub stacks: HashMap<i32, Vec<char>>,
+    keys: Vec<i32>,
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -24,6 +25,7 @@ pub struct MoveError;
 impl Day5 {
     pub fn new() -> Day5 {
         let mut stacks: HashMap<i32, Vec<char>> = HashMap::new();
+        let keys = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         let stack1 = vec!['F', 'T', 'C', 'L', 'R', 'P', 'G', 'Q'];
         let stack2 = vec!['N', 'Q', 'H', 'W', 'R', 'F', 'S', 'J'];
@@ -35,17 +37,17 @@ impl Day5 {
         let stack8 = vec!['T', 'J', 'B'];
         let stack9 = vec!['Q', 'N', 'B', 'G', 'L', 'S', 'P', 'H'];
 
-        stacks.insert(1, stack1);
-        stacks.insert(2, stack2);
-        stacks.insert(3, stack3);
-        stacks.insert(4, stack4);
-        stacks.insert(5, stack5);
-        stacks.insert(6, stack6);
-        stacks.insert(7, stack7);
-        stacks.insert(8, stack8);
-        stacks.insert(9, stack9);
+        stacks.insert(keys[0], stack1);
+        stacks.insert(keys[1], stack2);
+        stacks.insert(keys[2], stack3);
+        stacks.insert(keys[3], stack4);
+        stacks.insert(keys[4], stack5);
+        stacks.insert(keys[5], stack6);
+        stacks.insert(keys[6], stack7);
+        stacks.insert(keys[7], stack8);
+        stacks.insert(keys[8], stack9);
 
-        Day5 { stacks }
+        Day5 { stacks, keys }
     }
 
     pub fn print_stacks(&mut self) {
@@ -54,6 +56,12 @@ impl Day5 {
         ret.iter().for_each(|stack| {
             println!("{:?}", stack);
         });
+    }
+
+    pub fn print_in_order(&mut self) {
+        let mut ret: Vec<&Vec<char>> = Vec::new();
+
+        self.keys.iter().for_each(|key| {})
     }
 
     pub fn get_first(&mut self, file_path: &str) {
