@@ -50,18 +50,32 @@ impl Day5 {
         Day5 { stacks, keys }
     }
 
-    pub fn print_stacks(&mut self) {
-        let ret: Vec<&Vec<char>> = self.stacks.values().into_iter().collect();
+    // pub fn print_stacks(&mut self) {
+    //     let ret: Vec<&Vec<char>> = self.stacks.values().into_iter().collect();
 
-        ret.iter().for_each(|stack| {
-            println!("{:?}", stack);
+    //     ret.iter().for_each(|stack| {
+    //         println!("{:?}", stack);
+    //     });
+    // }
+
+    // pub fn print_tops_in_order(&mut self) {
+    //     self.keys.iter().for_each(|key| {
+    //         let stack = self.stacks.get(key);
+
+    //         println!("{:?}", stack.unwrap().last());
+    //     });
+    // }
+
+    pub fn get_tops_in_order(&mut self) -> Vec<char> {
+        let mut tops: Vec<char> = Vec::new();
+
+        self.keys.iter().for_each(|key| {
+            let stack = self.stacks.get(key);
+
+            tops.push(stack.unwrap().last().unwrap().clone());
         });
-    }
 
-    pub fn print_in_order(&mut self) {
-        let mut ret: Vec<&Vec<char>> = Vec::new();
-
-        self.keys.iter().for_each(|key| {})
+        tops
     }
 
     pub fn get_first(&mut self, file_path: &str) {
