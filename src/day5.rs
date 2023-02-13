@@ -133,6 +133,18 @@ impl Day5 {
         self.stacks.get_mut(&to).unwrap().push(to_move);
     }
 
+    // this sucks but it will work. Really they should get a slice and move all at the same time.
+    fn index_move(&mut self, from: i32, to: i32, index: usize) {
+        let to_move = *self.stacks.get_mut(&from).unwrap().get(index).unwrap();
+
+        self.stacks.get_mut(&to).unwrap().push(to_move);
+    }
+
+    fn compl_move(&mut self, from: i32, index: usize) {
+        // todo remove packages from the from stack.
+        todo!();
+    }
+
     pub fn do_action(&mut self, action: Move) {
         for _ in 0..action.num_crates {
             self.do_move(action.from, action.to);
